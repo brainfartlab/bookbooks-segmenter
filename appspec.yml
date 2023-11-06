@@ -1,0 +1,12 @@
+---
+version: 0.0
+os: linux
+files:
+  - source: segmenter
+    destination: /opt/segmenter
+hooks:
+  BeforeInstall:
+    - location: scripts/start-cw-agent.sh
+    - location: scripts/install-segmenter.sh
+  ApplicationStart:
+    - location: scripts/start-segmenter.sh
