@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "testing the cw agent" > /var/log/bookbooks/segmenter.log
+echo "testing the cw agent" > /var/opt/bookbooks/segmenter.log
