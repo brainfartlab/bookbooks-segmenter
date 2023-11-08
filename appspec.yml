@@ -5,7 +5,7 @@ files:
   - source: /
     destination: /opt/segmenter
 hooks:
-  BeforeInstall:
+  AfterInstall:
     - location: scripts/start-cw-agent.sh
     - location: scripts/install-segmenter.sh
   ApplicationStart:
