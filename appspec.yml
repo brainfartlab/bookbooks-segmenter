@@ -7,6 +7,7 @@ files:
 hooks:
   AfterInstall:
     - location: scripts/start-cw-agent.sh
+      runas: root
     - location: scripts/install-segmenter.sh
   ApplicationStart:
     - location: scripts/start-segmenter.sh
