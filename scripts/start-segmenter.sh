@@ -7,4 +7,4 @@ done
 
 echo "$RAW_QUEUE_URL" >> /var/opt/bookbooks/segmenter.log
 source activate pytorch
-#segmenter >> /var/opt/bookbooks/segmenter.log
+segmenter --input-queue $RAW_QUEUE_URL >> /var/opt/bookbooks/segmenter.log
