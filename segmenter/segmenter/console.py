@@ -8,9 +8,9 @@ from .main import process
 
 
 @click.command()
-@click.option("-i", "--input-queue-url")
-@click.option("-o", "--output-queue-url")
-@click.option("-b", "--bucket")
+@click.option("-i", "--input-queue-url", required=True)
+@click.option("-o", "--output-queue-url", required=True)
+@click.option("-b", "--bucket", required=True)
 def main(input_queue_url, output_queue_url, bucket):
     client_sqs = boto3.client("sqs")
 

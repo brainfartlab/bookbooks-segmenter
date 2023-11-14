@@ -47,11 +47,11 @@ class Segment:
         return self.intersection(other) / self.size
 
 
-def process(image: Image, prompt: str) -> List[Image]:
+def process(image: Image.Image, prompt: str) -> List[Image.Image]:
     return segments(image, prompt)
 
 
-def segments(image: Image, prompt: str) -> List[Image]:
+def segments(image: Image.Image, prompt: str) -> List[Image.Image]:
     masks, boxes, phrases, logits = model.predict(image, prompt, BOX_THRESHOLD, TEXT_THRESHOLD)
 
     segments = []
@@ -79,7 +79,7 @@ def segments(image: Image, prompt: str) -> List[Image]:
         return subsegments
 
 
-def extract_segment(image: Image, segment: Segment) -> Image:
+def extract_segment(image: Image.Image, segment: Segment) -> Image.Image:
     blank = image.point(lambda _: 0)
 
     masked_image = Image.composite(image, blank, Image.fromarray(segment.mask))
