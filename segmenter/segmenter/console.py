@@ -4,7 +4,7 @@ import time
 
 import boto3
 
-from main import process
+from .main import process
 
 
 @click.command()
