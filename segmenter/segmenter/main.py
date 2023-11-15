@@ -60,7 +60,7 @@ def segments(image: Image.Image, prompt: str) -> List[Image.Image]:
             y_min=float(y_min),
             x_max=float(x_max),
             y_max=float(y_max),
-            mask=mask,
+            mask=mask.squeeze().cpu().numpy(),
         )
 
         segments.append(segment)
