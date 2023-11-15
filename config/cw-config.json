@@ -10,6 +10,11 @@
                          "file_path": "/var/opt/bookbooks/segmenter.out.log",
                          "log_group_name": "/bookbooks/segmenter",
                          "log_stream_name": "{instance_id}"
+                     },
+                     {
+                         "file_path": "/var/opt/bookbooks/segmenter.err.log",
+                         "log_group_name": "/bookbooks/segmenter",
+                         "log_stream_name": "{instance_id}"
                      }
                  ]
              }
