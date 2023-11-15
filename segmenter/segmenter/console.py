@@ -16,7 +16,7 @@ class Config:
     image_bucket: str
 
     @staticmethod
-    def from_parameter(parameter_name, client=boto.client("ssm")):
+    def from_parameter(parameter_name, client=boto3.client("ssm")):
         response = client.get_parameter(Name=parameter_name)
         data = json.loads(response["Parameter"]["Value"])
 
