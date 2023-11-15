@@ -29,14 +29,11 @@ class Config:
 
 @click.command()
 @click.option("-c", "--config", required=True)
-@click.option("-r", "--region", required=True)
 #@click.option("-o", "--output-queue-url", required=True)
 #@click.option("-b", "--bucket", required=True)
-def main(config, region):
-    region = "eu-west-1"
-    click.echo(f"Region: {region}")
-    client_ssm = boto3.client("ssm", region_name=region)
-    client_sqs = boto3.client("sqs", region_name=region)
+def main(config):
+    client_ssm = boto3.client("ssm")
+    client_sqs = boto3.client("sqs")
 
     click.echo("Retrieving config")
     config = Config.from_parameter(config, client=client_ssm)
