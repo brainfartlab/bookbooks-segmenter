@@ -35,7 +35,7 @@ def main(config):
     client_ssm = boto3.client("ssm")
     client_sqs = boto3.client("sqs")
 
-    click.echo("Retrieving config")
+    click.echo(f"Retrieving config: {config}")
     config = Config.from_parameter(config, client=client_ssm)
 
     while True:
