@@ -74,11 +74,15 @@ def segment(image: Image.Image, prompt: str) -> List[Image.Image]:
         return segment_images
     else:
         logger.info("looking for subsegments")
-        subsegments = []
+        final_segments = []
         for segment_image in segment_images:
-            subsegments.extend(segment(segment_image, prompt))
+            subsegments = segment(segment_image, prompt)
+            if len(subsegments) <= 1:
+                final_segments.append(segment_image)
+            else:
+                final_segments.extend(subsegments)
 
-        return subsegments
+        return final_segments
 
 
 def extract_segment(image: Image.Image, segment: Segment) -> Image.Image:
