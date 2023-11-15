@@ -52,7 +52,7 @@ def write_image(image: Image.Image, bucket: str, key: str, client=boto3.client("
     client.put_object(
         Bucket=bucket,
         Key=key,
-        Body=data.get_value(),
+        Body=data.getvalue(),
     )
 
 
