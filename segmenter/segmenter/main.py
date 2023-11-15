@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 from typing import List
 
 from lang_sam import LangSAM
