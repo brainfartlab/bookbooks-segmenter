@@ -10,6 +10,8 @@ BOX_THRESHOLD = 0.25
 TEXT_THRESHOLD = 0.25
 
 model = LangSAM()
+logger = logging.getLogger(__name__)
+click_logging.basic_config(logger)
 
 
 @dataclass
@@ -66,12 +68,15 @@ def segments(image: Image.Image, prompt: str) -> List[Image.Image]:
 
         segments.append(segment)
 
+    logger.info("detected %d segments", len(segments))
+
     retained = reduce_segments(segments)
 
     segment_images = [extract_segment(image, segment) for segment in retained]
     if len(segment_images) <= 1:
         return segment_images
     else:
+        logger.info("looking for subsegments")
         subsegments = []
         for segment_image in segment_images:
             subsegments.extend(segments(segment_image, prompt))
@@ -97,12 +102,14 @@ def reduce_segments(segments) -> List[Segment]:
             if other in omissions:
                 continue
 
-            if segment.intersect_ratio(other) > 0.95:
+            if segment.intersection_ratio(other) > 0.95:
                 if segment.size > 2*other.size:
                     omissions.append(segment)
                     break
 
                 if segment.size < 2*other.size:
                     omissions.append(other)
+
+    logger.info("reducing segments from %d to %d", len(segments), len(segments) - len(omissions))
 
     return [segment for segment in segments if segment not in omissions]
