@@ -50,12 +50,12 @@ def process(image: Image.Image, prompt: str) -> List[Image.Image]:
     return segments(image, prompt)
 
 
-def segments(image: Image.Image, prompt: str) -> List[Image.Image]:
+def segment(image: Image.Image, prompt: str) -> List[Image.Image]:
     masks, boxes, phrases, logits = model.predict(image, prompt, BOX_THRESHOLD, TEXT_THRESHOLD)
 
     segments = []
     for (mask, (x_min, y_min, x_max, y_max)) in zip(masks, boxes):
-        segment = Segment(
+        s = Segment(
             x_min=float(x_min),
             y_min=float(y_min),
             x_max=float(x_max),
@@ -63,20 +63,20 @@ def segments(image: Image.Image, prompt: str) -> List[Image.Image]:
             mask=mask.squeeze().cpu().numpy(),
         )
 
-        segments.append(segment)
+        segments.append(s)
 
     logger.info("detected %d segments", len(segments))
 
     retained = reduce_segments(segments)
 
-    segment_images = [extract_segment(image, segment) for segment in retained]
+    segment_images = [extract_segment(image, s) for s in retained]
     if len(segment_images) <= 1:
         return segment_images
     else:
         logger.info("looking for subsegments")
         subsegments = []
         for segment_image in segment_images:
-            subsegments.extend(segments(segment_image, prompt))
+            subsegments.extend(segment(segment_image, prompt))
 
         return subsegments
 
