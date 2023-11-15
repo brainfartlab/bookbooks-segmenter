@@ -11,7 +11,7 @@ import time
 import boto3
 
 from .main import process
-from .utilities.data_classes import SQSEvent
+from .utilities.data_classes import SQSEvent, S3Record
 
 
 logger = logging.getLogger(__name__)
