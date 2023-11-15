@@ -37,7 +37,7 @@ def main(config, region):
     client_sqs = boto3.client("sqs", region_name=region)
 
     click.echo("Retrieving config")
-    config = Config.from_parameter(config, client_ssm)
+    config = Config.from_parameter(config, client=client_ssm)
 
     while True:
         response = client_sqs.receive_message(
