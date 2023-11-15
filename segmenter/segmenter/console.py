@@ -35,6 +35,7 @@ def main(config):
     client_ssm = boto3.client("ssm")
     client_sqs = boto3.client("sqs")
 
+    click.echo("Retrieving config")
     config = Config.from_parameter(config, client_ssm)
 
     while True:
@@ -48,9 +49,9 @@ def main(config):
             message_body = json.loads(message["Body"])
             click.echo(message_body)
 
-            client_sqs.delete_message(
-                QueueUrl=config.input_queue_url,
-                ReceiptHandle=message["ReceiptHandle"],
-            )
+            #client_sqs.delete_message(
+            #    QueueUrl=config.input_queue_url,
+            #    ReceiptHandle=message["ReceiptHandle"],
+            #)
 
-        time.sleep(1)
+        time.sleep(10)
