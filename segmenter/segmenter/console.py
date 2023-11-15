@@ -33,6 +33,7 @@ class Config:
 #@click.option("-o", "--output-queue-url", required=True)
 #@click.option("-b", "--bucket", required=True)
 def main(config, region):
+    click.echo(f"Region: {region}")
     client_ssm = boto3.client("ssm", region_name=region)
     client_sqs = boto3.client("sqs", region_name=region)
 
