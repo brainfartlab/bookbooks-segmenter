@@ -1,12 +1,21 @@
 from dataclasses import dataclass
+import logging
+import io
 
 import click
+import click_logging
 import json
+from PIL import Image
 import time
 
 import boto3
 
 from .main import process
+from .utilities.data_classes import SQSEvent
+
+
+logger = logging.getLogger(__name__)
+click_logging.basic_config(logger)
 
 
 @dataclass
@@ -27,15 +36,35 @@ class Config:
         )
 
 
+def load_image(record: S3Record, client=boto3.client("s3")):
+    response = client.get_object(
+        Bucket=record.s3.bucket.name,
+        Key=record.s3.object.key,
+    )
+
+    return Image.open(response["Body"]).convert("RGB")
+
+
+def write_image(image: Image.Image, bucket: str, key: str, client=boto3.client("s3")):
+    data = io.BytesIO()
+    image.save(data, format="PNG")
+
+    client.put_object(
+        Bucket=bucket,
+        Key=key,
+        Body=data.get_value(),
+    )
+
+
 @click.command()
 @click.option("-c", "--config", required=True)
-#@click.option("-o", "--output-queue-url", required=True)
-#@click.option("-b", "--bucket", required=True)
+@click_logging.simple_verbosity_option(logger)
 def main(config):
+    client_s3 = boto3.client("s3")
     client_ssm = boto3.client("ssm")
     client_sqs = boto3.client("sqs")
 
-    click.echo(f"Retrieving config: {config}")
+    logger.info("loading config from %s", config)
     config = Config.from_parameter(config, client=client_ssm)
 
     while True:
@@ -47,7 +76,22 @@ def main(config):
 
         for message in response["Messages"]:
             message_body = json.loads(message["Body"])
-            click.echo(message_body)
+            event = SQSEvent(**message_body)
+
+            for record in event.records:
+                logger.info("retrieving segments from %s", record.location)
+                image = load_image(record)
+
+                segments = process(image, "book spine")
+
+                for i, segment in enumerate(segments):
+                    logger.info("writing segment %d", i)
+                    write_image(
+                        segment,
+                        record.s3.bucket.name,
+                        f"segments/{i}.png",
+                        client_s3
+                    )
 
             #client_sqs.delete_message(
             #    QueueUrl=config.input_queue_url,
