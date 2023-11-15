@@ -47,7 +47,7 @@ class Segment:
 
 
 def process(image: Image.Image, prompt: str) -> List[Image.Image]:
-    return segments(image, prompt)
+    return segment(image, prompt)
 
 
 def segment(image: Image.Image, prompt: str) -> List[Image.Image]:
