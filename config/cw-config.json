@@ -7,7 +7,7 @@
              "files": {
                  "collect_list": [
                      {
-                         "file_path": "/var/opt/bookbooks/segmenter.log",
+                         "file_path": "/var/opt/bookbooks/segmenter.out.log",
                          "log_group_name": "/bookbooks/segmenter",
                          "log_stream_name": "{instance_id}"
                      }
