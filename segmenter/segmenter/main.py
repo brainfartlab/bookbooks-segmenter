@@ -37,12 +37,7 @@ class Segment:
         if intersect_x_min >= intersect_x_max or intersect_y_min >= intersect_y_max:
             return 0
         else:
-            return Segment(
-                x_min=intersect_x_min,
-                y_min=intersect_y_min,
-                x_max=intersect_x_max,
-                y_max=intersect_y_max,
-            ).size
+            return (intersect_x_max - intersect_x_min) * (intersect_y_max - intersect_y_min)
 
     def intersect(self, other):
         return self.intersection(other) > 0
