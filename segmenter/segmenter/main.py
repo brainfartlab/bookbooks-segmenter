@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import logging
 from typing import List
 
+import click_logging
 from lang_sam import LangSAM
 import numpy as np
 from PIL import Image
