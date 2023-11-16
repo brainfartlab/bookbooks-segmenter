@@ -10,6 +10,7 @@ class S3Bucket(BaseModel):
 class S3Object(BaseModel):
     key: str
     size: int
+    etag: str = Field(alias="eTag")
 
 
 class S3Event(BaseModel):

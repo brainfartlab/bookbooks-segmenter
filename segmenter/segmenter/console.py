@@ -89,13 +89,13 @@ def main(config):
                     write_image(
                         segment,
                         record.s3.bucket.name,
-                        f"segments/{i}.png",
+                        f"segments/{record.s3.object.etag}/{i:03}.png",
                         client_s3
                     )
 
-            #client_sqs.delete_message(
-            #    QueueUrl=config.input_queue_url,
-            #    ReceiptHandle=message["ReceiptHandle"],
-            #)
+            client_sqs.delete_message(
+                QueueUrl=config.input_queue_url,
+                ReceiptHandle=message["ReceiptHandle"],
+            )
 
         time.sleep(10)
