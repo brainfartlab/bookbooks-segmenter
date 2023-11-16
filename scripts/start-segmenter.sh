@@ -14,4 +14,4 @@ AWS_REGION=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/l
 export AWS_DEFAULT_REGION=$AWS_REGION
 
 source activate pytorch
-supervisord -c config/supervisord.conf
+supervisord -c /opt/segmenter/config/supervisord.conf
